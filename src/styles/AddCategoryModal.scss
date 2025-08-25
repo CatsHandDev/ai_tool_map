@@ -1,0 +1,110 @@
+// 既存のモーダルスタイルをインポートして再利用
+@import './CategoryEditModal.scss';
+
+.add-category-modal {
+  max-width: 400px; // 少し小さめのモーダル
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    p {
+      margin: 0;
+      color: #555;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+
+      button {
+        flex: 1;
+        border: none;
+        border-radius: 6px;
+        padding: 0.8rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-weight: bold;
+        font-size: 1rem;
+
+        &.primary-btn {
+          background-color: #7b61ff;
+          color: white;
+          &:hover { background-color: #6a50e0; }
+        }
+        &.secondary-btn {
+          background-color: #f0f0f0;
+          color: #333;
+          &:hover { background-color: #e0e0e0; }
+        }
+      }
+    }
+  }
+}
+
+.add-category-modal {
+  max-width: 400px; // 少し小さめのモーダル
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    p {
+      margin: 0;
+      color: #555;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+
+      button {
+        flex: 1;
+        border: none;
+        border-radius: 6px;
+        padding: 0.8rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-weight: bold;
+        font-size: 1rem;
+
+        &.primary-btn {
+          background-color: #7b61ff;
+          color: white;
+          &:hover { background-color: #6a50e0; }
+        }
+        &.secondary-btn {
+          background-color: #f0f0f0;
+          color: #333;
+          &:hover { background-color: #e0e0e0; }
+        }
+      }
+    }
+  }
+}

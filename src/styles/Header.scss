@@ -1,0 +1,59 @@
+.app-header {
+  width: 100%;
+  background-color: #fff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem; // 下に少し余白を設ける
+  box-sizing: border-box; // paddingがwidthに影響しないように
+}
+
+.app-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7b61ff;
+  text-decoration: none;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  .user-info {
+    font-size: 0.95rem;
+    color: #555;
+  }
+
+  .logout-button,
+  .login-button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-decoration: none; // Linkの場合に下線が出ないように
+    display: inline-block; // Linkの場合にpaddingが効くように
+    text-align: center; // Linkの場合にテキスト中央寄せ
+
+    &.logout-button {
+      background-color: #f0f0f0;
+      color: #333;
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
+
+    &.login-button {
+      background-color: #7b61ff;
+      color: white;
+      &:hover {
+        background-color: #6a50e0;
+      }
+    }
+  }
+}

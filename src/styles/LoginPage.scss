@@ -1,0 +1,81 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 5rem;
+}
+
+.login-form {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box; /* paddingがwidthに影響しないように */
+    }
+  }
+
+  .error-message {
+    color: #e74c3c;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &[type="submit"] {
+        background-color: #7b61ff;
+        color: white;
+        &:hover {
+          background-color: #6a50e0;
+        }
+      }
+
+      &.secondary {
+        background-color: #f0f0f0;
+        color: #333;
+         &:hover {
+          background-color: #e0e0e0;
+        }
+      }
+    }
+  }
+}
