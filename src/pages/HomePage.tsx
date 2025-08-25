@@ -208,10 +208,9 @@ export const HomePage = () => {
               }}
               aria-label="新しいカテゴリを追加する"
             >
-              <h1>あなたの相棒</h1>
-              <p>AIツールマップ</p>
+              <h1>AIツールマップ</h1>
               <br/>
-              <AddIcon/ >
+              <AddIcon className="add-icon" />
             </button>
           </div>
 
