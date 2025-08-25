@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/firebase';
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
+  signInWithEmailAndPassword,      // ★ ポップアップ認証用の関数をインポート
 } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app'; // ★ Firebaseの具体的なエラー型をインポート
 import '../styles/LoginPage.scss';
+import { useAtomValue } from 'jotai';      // useAtomValueをインポート
+import { userAtom } from '../store/auth'; // userAtomをインポート
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  const user = useAtomValue(userAtom); // 現在のユーザー情報を取得
+
+  // ★★★ このリダイレクトガードを復活させます ★★★
+  useEffect(() => {
+    // userオブジェクトが存在する（=ログイン済み）場合
+    if (user) {
+      // ホームページにリダイレクト
+      navigate('/');
+    }
+    // userの状態が変化するたびにこのチェックを実行
+  }, [user, navigate]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +72,7 @@ export const LoginPage = () => {
       console.error('ログインエラー:', err);
     }
   };
+
 
   return (
     <div className="login-container">
