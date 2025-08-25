@@ -1,24 +1,22 @@
 import { Routes, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
-import { AuthObserver } from './components/AuthObserver'; // インポート
-import { Header } from './components/Header'; // インポート
-import './App.scss'; // 全体スタイル
+import { Header } from './components/Header';
+import { AuthGuard } from './components/AuthGuard'; // ★ 新しいAuthGuardをインポート
+import './App.scss';
 
 function App() {
   return (
-    <div className="container">
-      {/* AuthObserverを最上位に配置し、認証状態を監視 */}
-      <AuthObserver />
-
-      {/* 全てのページで共通のヘッダー */}
-      <Header />
-
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
-    </div>
+    // ★ AuthGuardが認証状態を管理し、完了するまで子要素のレンダリングを待つ
+    <AuthGuard>
+      <div className="container">
+        <Header />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </div>
+    </AuthGuard>
   );
 }
 

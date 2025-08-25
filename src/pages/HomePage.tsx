@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import { mindMapAtom, mindMapLoadingAtom } from '../store/mindMap';
-import { userAtom } from '../store/auth';
+import { userAtom, authReadyAtom } from '../store/auth';
 import { db } from '../firebase/firebase';
 import { collection, getDocs, doc, writeBatch } from 'firebase/firestore';
 import { type MindMapNode, initialData, type AiTool } from '../data/initialMindMapData';
@@ -13,6 +13,7 @@ export const HomePage = () => {
   const [mindMapData, setMindMapData] = useAtom(mindMapAtom);
   const [isLoading, setIsLoading] = useAtom(mindMapLoadingAtom);
   const user = useAtomValue(userAtom);
+  const authReady = useAtomValue(authReadyAtom);
 
   // モーダル表示のための状態管理
   const [editingCategoryName, setEditingCategoryName] = useState<string | null>(null);
@@ -20,58 +21,69 @@ export const HomePage = () => {
 
   // ログイン状態に応じてデータを取得するロジック
   useEffect(() => {
+    // authReadyがfalseの間は、何もしない（AuthGuardがローディング表示中）
+    if (!authReady) {
+      return;
+    }
+
     const fetchMindMapData = async () => {
       if (user) {
         setIsLoading(true);
-        const userToolsCollectionRef = collection(db, 'users', user.uid, 'aiTools');
-        const querySnapshot = await getDocs(userToolsCollectionRef);
+        try{
+          const userToolsCollectionRef = collection(db, 'users', user.uid, 'aiTools');
+          const querySnapshot = await getDocs(userToolsCollectionRef);
 
-        if (querySnapshot.empty) {
-          console.log('初回ログイン：初期データをFirestoreにコピーします。');
-          const batch = writeBatch(db);
-          initialData.forEach(node => {
-            node.tools.forEach(tool => {
-              const toolDocRef = doc(collection(db, 'users', user.uid, 'aiTools'));
-              batch.set(toolDocRef, { ...tool, category: node.category });
+          if (querySnapshot.empty) {
+            console.log('初回ログイン：初期データをFirestoreにコピーします。');
+            const batch = writeBatch(db);
+            initialData.forEach(node => {
+              node.tools.forEach(tool => {
+                const toolDocRef = doc(collection(db, 'users', user.uid, 'aiTools'));
+                batch.set(toolDocRef, { ...tool, category: node.category });
+              });
             });
-          });
-          await batch.commit();
-          const newSnapshot = await getDocs(userToolsCollectionRef);
-          const toolsFromFirestore: (AiTool & { category: string, docId: string })[] = [];
-          newSnapshot.forEach((doc) => {
-            const data = doc.data();
-            toolsFromFirestore.push({
-              id: data.id,
-              name: data.name,
-              url: data.url,
-              description: data.description,
-              category: data.category,
-              docId: doc.id,
+            await batch.commit();
+            const newSnapshot = await getDocs(userToolsCollectionRef);
+            const toolsFromFirestore: (AiTool & { category: string, docId: string })[] = [];
+            newSnapshot.forEach((doc) => {
+              const data = doc.data();
+              toolsFromFirestore.push({
+                id: data.id,
+                name: data.name,
+                url: data.url,
+                description: data.description,
+                category: data.category,
+                docId: doc.id,
+              });
             });
-          });
-          const formattedData = formatData(toolsFromFirestore);
-          setMindMapData(formattedData);
-        } else {
-          console.log('Firestoreからデータを取得しました。');
-          const toolsFromFirestore: (AiTool & { category: string, docId: string })[] = [];
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            toolsFromFirestore.push({
-              id: data.id,
-              name: data.name,
-              url: data.url,
-              description: data.description,
-              category: data.category,
-              docId: doc.id,
+            const formattedData = formatData(toolsFromFirestore);
+            setMindMapData(formattedData);
+          } else {
+            console.log('Firestoreからデータを取得しました。');
+            const toolsFromFirestore: (AiTool & { category: string, docId: string })[] = [];
+            querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              toolsFromFirestore.push({
+                id: data.id,
+                name: data.name,
+                url: data.url,
+                description: data.description,
+                category: data.category,
+                docId: doc.id,
+              });
             });
-          });
-          const formattedData = formatData(toolsFromFirestore);
-          setMindMapData(formattedData);
-        }
-      } else {
+            const formattedData = formatData(toolsFromFirestore);
+            setMindMapData(formattedData);
+          }
+        } catch (error) {
+          console.error("Firestore Error:", error);
+        } finally {
+          setIsLoading(false);
+        }      }
+      else {
         setMindMapData(initialData);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     const formatData = (tools: (AiTool & { category: string, docId: string })[]): MindMapNode[] => {
@@ -88,7 +100,7 @@ export const HomePage = () => {
     }
 
     fetchMindMapData();
-  }, [user, setMindMapData, setIsLoading]);
+  }, [user, setMindMapData, setIsLoading, authReady]);
 
   if (isLoading && user) {
     return <div className="loading">データを読み込んでいます...</div>;
