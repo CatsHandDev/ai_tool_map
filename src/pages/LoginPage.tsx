@@ -78,6 +78,7 @@ export const LoginPage = () => {
     <div className="login-container">
       <div className="login-form">
         <h2>ログイン / 新規登録</h2>
+        <p>枠の中に書いてあるサンプルをそのまま入力すると、ゲストで利用できます。</p>
         <form>
           <div className="form-group">
             <label htmlFor="email">メールアドレス</label>
@@ -86,7 +87,7 @@ export const LoginPage = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="test@example.com"
+              placeholder="guest@example.com"
               required
             />
           </div>
@@ -97,7 +98,7 @@ export const LoginPage = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="6文字以上"
+              placeholder="guest-account"
               required
             />
           </div>
