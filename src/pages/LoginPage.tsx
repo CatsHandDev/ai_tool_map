@@ -78,7 +78,7 @@ export const LoginPage = () => {
     <div className="login-container">
       <div className="login-form">
         <h2>ログイン / 新規登録</h2>
-        <p>枠の中に書いてあるサンプルをそのまま入力すると、ゲストで利用できます。</p>
+        <p>枠内のサンプルをそのまま入力すると<br />ゲストアカウントで利用できます。</p>
         <form>
           <div className="form-group">
             <label htmlFor="email">メールアドレス</label>
